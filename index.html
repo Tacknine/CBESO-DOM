@@ -1,0 +1,317 @@
+<!doctype html> 
+<html lang="sw">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CBESO - Home</title>
+  <style>
+    :root{
+      --bg:#0f1724; --card:#0b1220; --accent:#06b6d4; --muted:#94a3b8;
+      --glass: rgba(255,255,255,0.03);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh; background:
+      linear-gradient(180deg, rgba(6,11,22,1) 0%, rgba(8,12,20,1) 100%);
+      color:#e6eef6; display:flex; align-items:center; justify-content:center; padding:20px;
+    }
+    .container{
+      width:100%; max-width:980px; background:var(--card); border-radius:14px; padding:26px;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+    }
+    header{display:flex; align-items:center; gap:16px;}
+    .logo{
+      width:64px; height:64px; border-radius:10px; background:linear-gradient(135deg,var(--accent),#7c3aed);
+      display:flex; align-items:center; justify-content:center; font-weight:700; font-size:20px;
+      color:#032027;
+    }
+    h1{margin:0; font-size:20px}
+    p.lead{margin:6px 0 0; color:var(--muted); font-size:14px}
+    .grid{
+      margin-top:22px; display:grid; grid-template-columns: 1fr 320px; gap:20px;
+    }
+
+    /* Left panel - features */
+    .card{ background:var(--glass); border-radius:10px; padding:18px; }
+    .feature{display:flex; gap:12px; align-items:flex-start; margin-bottom:12px;}
+    .feature .icon{width:44px;height:44px;border-radius:8px;background:#061728;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--accent)}
+    .feature h3{margin:0;font-size:15px}
+    .feature p{margin:4px 0 0;color:var(--muted);font-size:13px}
+
+    /* Right panel - actions */
+    .panel{background: linear-gradient(180deg, rgba(255,255,255,0.02), transparent); padding:18px; border-radius:10px;}
+    .btn{display:inline-block;padding:12px 16px;border-radius:10px;border:none;cursor:pointer;font-weight:600}
+    .btn-primary{background:var(--accent); color:#022; box-shadow: 0 6px 18px rgba(6,182,212,0.12)}
+    .btn-outline{background:transparent;color:var(--muted);border:1px solid rgba(255,255,255,0.04)}
+
+    form{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+    label{font-size:13px;color:var(--muted)}
+    input[type=text], input[type=password], input[type=email], input[type=tel]{
+      padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04); background:transparent; color:inherit;
+    }
+    .small{font-size:13px;color:var(--muted)}
+
+    footer{margin-top:18px; text-align:center; color:var(--muted); font-size:13px}
+
+    /* OTP modal */
+    .modal{
+      position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:40;
+      background:rgba(2,6,23,0.6);
+    }
+    .modal.show{display:flex}
+    .modal-card{width:100%;max-width:420px;background:var(--card);border-radius:12px;padding:18px}
+    .otp-inputs{display:flex;gap:8px}
+    .otp-inputs input{flex:1;text-align:center;padding:10px;font-size:18px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.06)}
+
+    @media (max-width:880px){
+      .grid{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+  <div class="container" role="main" aria-labelledby="site-title">
+    <header>
+      <div class="logo">CBESO</div>
+      <div>
+        <h1 id="site-title">CBESO - Center for Lost & Found (Student)</h1>
+        <p class="lead">Tafuta, ripoa, na tambua mali iliyopotea chuoni kwa urahisi. Jiunge au Ingia sasa.</p>
+      </div>
+    </header>
+
+    <div class="grid" aria-live="polite">
+      <!-- left: features -->
+      <div class="card" aria-hidden="false">
+        <div class="feature">
+          <div class="icon">1</div>
+          <div>
+            <h3>Usajili & Uthibitisho</h3>
+            <p class="small">Ingiza username, password, email na simu. Utapokea OTP kwenye email kuthibitisha akaunti.</p>
+          </div>
+        </div>
+
+        <div class="feature">
+          <div class="icon">2</div>
+          <div>
+            <h3>Uchunguzi Mali</h3>
+            <p class="small">Tafuta mali kama kadi, simu, gari n.k. Mfumo utakutaarifu pindi mali ikifika ofisini.</p>
+          </div>
+        </div>
+
+        <div class="feature">
+          <div class="icon">3</div>
+          <div>
+            <h3>Matangazo & Uchaguzi</h3>
+            <p class="small">Matangazo ya taasisi na moduli ya uchaguzi itakuwepo hivi karibuni.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- right: actions (Register / Login) -->
+      <aside class="panel" aria-label="Actions">
+        <h2 style="margin:0 0 8px 0">Anza hapa</h2>
+        <p class="small">Chagua kujiunga au kuingia ili kupata huduma za CBESO.</p>
+
+        <!-- Register form -->
+        <form id="registerForm" aria-label="Register form" onsubmit="return false;">
+          <label for="r-username">Username</label>
+          <input id="r-username" type="text" required minlength="4" placeholder="jina la mtumiaji" />
+
+          <label for="r-email">Email</label>
+          <input id="r-email" type="email" required placeholder="you@example.com" />
+
+          <label for="r-phone">Simu</label>
+          <input id="r-phone" type="tel" required placeholder="+2557xxxxxxxx" />
+
+          <label for="r-password">Password</label>
+          <input id="r-password" type="password" required minlength="8" placeholder="password yako" />
+
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="btn btn-primary" onclick="startRegister()">Register</button>
+            <button class="btn btn-outline" onclick="prefillTest()">Use demo</button>
+          </div>
+          <p class="small" style="margin-top:8px">Umejiunga tayari? <a href="#" onclick="showLogin()">Ingia</a></p>
+        </form>
+
+        <!-- Login form (hidden by default) -->
+        <form id="loginForm" aria-label="Login form" style="display:none" onsubmit="return false;">
+          <label for="l-username">Username</label>
+          <input id="l-username" type="text" required placeholder="jina la mtumiaji" />
+
+          <label for="l-password">Password</label>
+          <input id="l-password" type="password" required placeholder="password" />
+
+          <div style="display:flex;gap:8px;margin-top:8px">
+            <button class="btn btn-primary" onclick="startLogin()">Login</button>
+            <button class="btn btn-outline" onclick="showRegister()">Register</button>
+          </div>
+          <p class="small" style="margin-top:8px">Umesahau password? <em>feature soon</em></p>
+        </form>
+
+      </aside>
+    </div>
+
+    <footer>
+      © <span id="year"></span> CBESO - All rights reserved.
+    </footer>
+  </div>
+
+  <!-- OTP Modal -->
+  <div id="otpModal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="modal-card" role="document">
+      <h3 style="margin-top:0">Thibitisha OTP</h3>
+      <p class="small">Tumetuma nambari ya OTP kwa email yako. Iliendelee, ingiza nambari ya OTP hapa.</p>
+      <div class="otp-inputs" style="margin-top:12px">
+        <input maxlength="1" class="otp" />
+        <input maxlength="1" class="otp" />
+        <input maxlength="1" class="otp" />
+        <input maxlength="1" class="otp" />
+        <input maxlength="1" class="otp" />
+        <input maxlength="1" class="otp" />
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <button class="btn btn-primary" onclick="verifyOtp()">Verify OTP</button>
+        <button class="btn btn-outline" onclick="closeOtp()">Cancel</button>
+      </div>
+
+      <p id="otpMsg" class="small" style="margin-top:8px;color:var(--muted)"></p>
+    </div>
+  </div>
+
+  <script>
+    // simple demo logic (client-side only). Replace with backend calls in production.
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // storage (simulate server DB)
+    const fakeDB = { users: [] };
+    let currentTemp = null; // store temp reg/login data
+    let lastSentOtp = null;
+
+    function prefillTest(){
+      document.getElementById('r-username').value = 'mwanafunzi1';
+      document.getElementById('r-email').value = 'harunijackson504@gmail.com';
+      document.getElementById('r-phone').value = '+255712345678';
+      document.getElementById('r-password').value = 'password123';
+    }
+
+    function showLogin(){
+      document.getElementById('registerForm').style.display='none';
+      document.getElementById('loginForm').style.display='flex';
+    }
+    function showRegister(){
+      document.getElementById('registerForm').style.display='flex';
+      document.getElementById('loginForm').style.display='none';
+    }
+
+    // --- Registration flow ---
+    function startRegister(){
+      const u = document.getElementById('r-username').value.trim();
+      const e = document.getElementById('r-email').value.trim();
+      const p = document.getElementById('r-password').value;
+      const ph = document.getElementById('r-phone').value.trim();
+
+      if(!u || !e || !p || !ph){ alert('Tafadhali jaza fomu yote.'); return; }
+      if(fakeDB.users.some(x=>x.username===u)){ alert('Username tayari iko.'); return; }
+
+      // simulate server creating pending user and sending OTP
+      currentTemp = { type:'register', username:u, email:e, phone:ph, password:p };
+      sendOtp(e);
+      openOtpModal();
+      showOtpMsg('Tuma OTP kwenye email: ' + e);
+    }
+
+    // --- Login flow ---
+    function startLogin(){
+      const u = document.getElementById('l-username').value.trim();
+      const p = document.getElementById('l-password').value;
+
+      const user = fakeDB.users.find(x=>x.username===u);
+      if(!user || user.password !== p){ alert('Umekosea username au password'); return; }
+
+      // valid credentials -> send OTP for verification
+      currentTemp = { type:'login', username:u, email:user.email };
+      sendOtp(user.email);
+      openOtpModal();
+      showOtpMsg('OTP imetumwa kwenye email yako: ' + user.email);
+    }
+
+    // OTP helpers (demo: numeric 6 digits)
+    function sendOtp(email){
+      lastSentOtp = (Math.floor(100000 + Math.random()*900000)).toString();
+      console.log('Simulated OTP for', email, ':', lastSentOtp);
+      // in real app -> send email via backend, do not log OTP
+    }
+
+    function openOtpModal(){
+      const m = document.getElementById('otpModal');
+      m.classList.add('show'); m.setAttribute('aria-hidden','false');
+      // clear inputs
+      document.querySelectorAll('.otp').forEach(i=>i.value='');
+      setTimeout(()=>document.querySelector('.otp').focus(), 120);
+    }
+    function closeOtp(){
+      const m = document.getElementById('otpModal');
+      m.classList.remove('show'); m.setAttribute('aria-hidden','true');
+    }
+    function showOtpMsg(text){ document.getElementById('otpMsg').textContent = text; }
+
+    // move focus between OTP inputs
+    document.addEventListener('input', (e)=>{
+      if(e.target.classList.contains('otp')){
+        if(e.target.value.length===1){
+          const next = e.target.nextElementSibling;
+          if(next) next.focus();
+        }
+      }
+    });
+
+    function verifyOtp(){
+      const digits = Array.from(document.querySelectorAll('.otp')).map(i=>i.value||'').join('');
+      if(digits.length !== 6){ showOtpMsg('Naomba ingiza OTP kamili'); return; }
+      if(digits !== lastSentOtp){ showOtpMsg('OTP si sahihi. Jaribu tena.'); return; }
+
+      // OTP sahihi → finalize action
+      if(currentTemp?.type === 'register'){
+        fakeDB.users.push({
+          username: currentTemp.username,
+          email: currentTemp.email,
+          phone: currentTemp.phone,
+          password: currentTemp.password, // real app -> hash password
+          role: 'student',
+          status: 'active',
+          createdAt: new Date().toISOString()
+        });
+        closeOtp();
+        alert('Umefanikiwa kujiunga. Sasa unaweza kuingia.');
+        showLogin();
+      } else if(currentTemp?.type === 'login'){
+        closeOtp();
+        alert('KARIBU! Umeingizwa mfumo.');
+        // redirect to dashboard (demo -> open a simple alert)
+        showDashboardFor(currentTemp.username);
+      }
+      currentTemp = null;
+      lastSentOtp = null;
+    }
+
+    function showDashboardFor(username){
+      // simple dashboard demo: open a new window or replace content
+      const html = `
+        <div style="padding:24px;font-family:Inter,system-ui;">
+          <h2>KARIBU ${username}</h2>
+          <p>Menu kuu:</p>
+          <ol>
+            <li>Tafuta Mali CBESO</li>
+            <li>Uchaguzi (Soon)</li>
+            <li>Matangazo & Ratiba</li>
+          </ol>
+          <p><button onclick="location.reload()" style="padding:10px 14px;border-radius:8px">Toka</button></p>
+        </div>`;
+      const win = window.open('', '_blank', 'width=600,height=450');
+      win.document.write(html);
+      win.document.close();
+    }
+  </script>
+</body>
+</html>
